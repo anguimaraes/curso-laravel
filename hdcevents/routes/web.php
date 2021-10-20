@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
     e depois: php artisan make:controller "nome do controller" nesse ex: EventController OBS:O nome do controller sempre é no singular
 */
 
-/* dando o "include" no meu controller EventController.php, que está dentro da pasta controllers */ /**/ 
+/* dando o "include" no meu controller EventController.php, que está dentro da pasta controllers */ 
 use App\Http\Controllers\EventController;
 
 Route::get('/', [EventController::class, 'index']);
