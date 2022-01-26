@@ -1,0 +1,179 @@
+comandos do laravel no terminal
+
+para de conectar no lavarel
+
+1 - Para entrar na pasta do projeto: cd (nome da pasta)
+
+2 - Para voltar uma pasta: cd..
+
+3 - Para entrar no laravel: php artisan serve
+
+4 - Para se criar um novo controller: add mais 1 terminal Para se criar u  novo controler add mais um terminal "entra na pasta, nesse exemplo o cd. \hdcevents\" "Enter" e depois: php artisan make:controller "nome do controller" nesse ex: EventController OBS:O nome do controller sempre é no singular
+
+5 - Para criar uma nova migration: php artisan make:migration create_products_table
+
+6 - ver como esta as migrations do projeto: php artisan migrate:status
+
+7 - No passo 5 foi criada a tabela "migrate" products_table mas não foi incluida no banco ainda, para incluir: php artisan migrate
+
+8 - Quando se cria uma nova linha na tabela ex(nome) se precisa dar um fresh no terminal para aparecer OBS: para se criar as linhas da tabela é no próprio vscode la na migration criada, no caminho database->migration->clica na migration que criou. para dar o fresh e aparecer na tabela ***OBS(esse comando deleta todas as tabelas e cria td de novo)***: php artisan migrate:fresh
+
+===========================================================================================================================================
+
+COMANDOS AVANÇADOS EM MIGRATONS
+
+-Quando precisamos adicionar um novo campo a uma tabela,*devemos criar uma nova migration*
+-porém devemos *tomar cuidado* para não rodar o comando *fresh*, e ´pagar os dados já existentes.
+-O comando *rollback* pode sewr utilizado ara voltar uma migration.
+-Para voltar todas podemos utilizar o *reset*.
+-Para voltar e rodar o migrate novamente utilizamos o *refresh*.
+
+9 - criar uma novo campo a uma tabela existente sem apagar a tabela (nesse ex vou add o campo category): php artisan make:migration add_category_to_products_table
+
+10- comando para dar um rollback e voltar para o status anterior: php artisan migrate:rollback
+11- dando o rollback de todas as migrações: php artisan migrate:reset
+
+12- Comando que faz o rollback da aplicação e faz o migrate novamente: php artisan migrate:refresh
+
+13- o comando fresh tem uma pequena diferença do refresh, ele primeiro apaga todas as tabelas do banco e depois faz as migrations novamente: php artisan migrate:fresh
+
+============================================================================================================================================
+Eloquent
+
+-Eloquent é a *ORM* do laravel
+-Cada tabela tem um *Model* que é responsavel pela interação entre as requisições ao banco;
+-A convenção para o Model é o nome da entidade em singular, euqnato a tabela é la entidade no plural: Event e events;
+-No Model faremos poucas alterações dos arquivos, geralmente *configurações especificas*
+
+14- Para criar um novo Model (Lembrando o caminho app->Models): php artisan make:model (nome do model(lembrando que primeira letra maiuscula e no singular))
+
+===============================================================================================================================================================
+
+Adicionando registro no banco pelo laravel
+
+-No laravel é comum ter uma action especifica para o post chamada de *store*, é nessa action que é feita o save dos dados no banco
+- Lá vamos criar o objeto e compor ele com base nos dados enviados pelo *POST*
+- Com o objeto formado utilizamos o método *save* para persistir os dados.
+
+===============================================================================================================================================================
+
+Flash Messages
+
+-Podemos adcionar mensagens ao usuário por *session*
+-Estas mensagens são conhecidas por *flash messages*
+-Podemos adicionar com o método *with* nos Controlles
+-Utilizadas para apresentar um feedback ao usuário
+-No blade podemos verificar a presença da mensagem pela diretiva *@session*
+
+================================================================================================================================================================
+
+Salvando imagem no laravel
+
+-Para fazer o upload de imagens precisamos mudar o *enctype* do form e também *criar um input* de envio das mesmas
+-No controller vamos fazer um *tratamento de verificação da imagem* que foi enviada
+-E depois vamos salvar ela com um *nome unico* em um diretório do projeto
+-No bancoL salvamos apenas o *path* para a imagem
+
+14 - Comando para add uma nova migration para a imagem(lembrando que não posso usar os outros comando de migration pq apaga todo o banco): php artisan make:migration add_image_to_events_table (lembrando que events_table é a migration que estou usando nesse meu projeto)
+
+====================================================================================================================================================================
+
+Resgatanto um registro
+
+-Vamos fazer a view do evento nesta aula;
+-E com isso aprender a resgatar *apenas um registro* pelo Eloquent
+-Vamos utilizar o método *findOrFail*
+-E também criar uma nova view e rota para esta função;
+-Esta tela tem a função de exibir todas as informações do evento e também o botão de participar
+
+====================================================================================================================================================================
+
+Savando em Json
+
+-Podemos salvar um conjunto de dados no banco para *itens de múltipla escolha*
+-Vamos criar um campo determinado de *json* via migrations
+-No front-end podemos utilizar *inputs com checkbox*
+-Após o envio para controller, apenas recebemos do request os itens e resto do processo é igual ao dos outros dados do nosso Model
+
+=====================================================================================================================================================================
+
+Salvando Datas
+
+-Para salvar datas no Laravel é muito fácil, precisammos criar um *input do tipo date* na nossa view;
+-um campo de *datetime* via migrations
+-E processar o envio dos dados via controller pelo request de POST
+
+15 - Comandos para criar novos campos dentro da tabela no banco - vou estar criando o campo date dentro da tabela events:
+php artisan make:migration add_date_to_events_table
+
+===================================================================================================================================================================
+
+Busca no laravel
+
+-Para criar uma busca no laravel é muito simples, vamos utilizar o *Eloquent*
+- O método Where vai identificar os registros que precisamos, *fazendo um filtro e nos enviando para a view*
+-Podemos fazer a exibição da busca na própria Home, mudando o layout com *diretivas de Blade*
+
+================================================================================================================================================================
+
+Autenticação no laravel
+
+-Podemos utilozar o *Jetstream* para aplicar uma autenticação de modo rápido no nosso sistema
+-Primeiramente instalamos o pacote via Composer,
+-Depois instalamos o *Liveware* que são componentes de autenticação para o blade
+-E po fim rodamos as migrations
+
+16 - instalar o jetstream via composer: composer require laravel/jetstream
+
+17 - instalar o liveware: php artisan jetstream:install livewire
+
+18- Logo depois usar esse comando, OBS se não tiver node instalado entra no site, baixar e next, next, install, e depois usar esse comando no terminal: npm install
+
+19- depois usar esse comando: npm run dev
+
+==================================================================================================================================================================
+
+Relations (one to many)
+
+-Relação são essenciais para sistemas de *banco de dados*
+-Vamos criar uam relação de *um para muitos*, entre usuários e eventos
+-Isso tornará *um usuário dono de um evento*, e também a possibilidade dele possuir vários
+-Precisamos alterar as migrations, adicionando uma chave estrangeira no model *Event*
+
+20- add o id de usuarios para a tabela de eventos: php artisan make:migration add_user_id_to_events_table
+
+21- Mesmo fazendo as alterações no Event.php e User.php ele não consegue add a chave sem ter um valor especifico, então temos que usar o comando que apaga td, vai perder td no banco mais vai fazer a relação: php artisan migrate:fresh
+
+====================================================================================================================================================================
+
+Criando uma dashboard
+
+-Agora que um *usuário está ligado a um evento* podemos criar uma dashboard
+-Ela vai *informar todos os eventos* quem o usuário possui
+-Futuramente também vamos add as ações de *edição* e de *deletar* evento nesta view;
+
+=====================================================================================================================================================================
+
+Deletando eventos
+
+-Vamos agora *deletar um evento*
+-Utilizaremos uma *nova rota* para isso
+-Outro *verbo HTTP* tbm será preciso: o *DELETE*
+-E ainda fare,ps a lógica no nosso *Controller* para esta alteração persistir no banco de dados
+
+====================================================================================================================================================================
+
+Editando Eventos
+
+-Vamos fazer a lógica de *editar um registro*
+-Precisaremos criar uma *nova rota e também a view* que mostra o form com os dados preenchidos
+-Além disso será necessário aplicar um outro verbo HTTO: o *PUT*
+-E persistir todas as alterações por meio de uma action no nosso *controller*
+
+=====================================================================================================================================================================
+
+Relations (many to many)
+
+-Vamos aprender uma nova relação de registro pelo laravel: a *many to many*
+-Vamos aplicar esta *lógica a participação de eventos*, onde um usuário pode ter vários eventos e um evento vários participantes.
+-Precisaremos *criar uma nova tabela* que administra estas relações, seguindo também a convenção do laravel.

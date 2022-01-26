@@ -1,34 +1,41 @@
 @extends('layouts.main')
 
-@section('title', 'HDC Events')
+@section('title', 'André Guimarães')
 
 @section('content')
 
-<h1>Titulo Teste</h1>
-<img src="/img/banner.jpg" alt="Banner">
+<div id="search-container" class="col-md-12">
+    <h1>Busque um evento</h1>
+    <form action="/" method="GET">
+        <input type="text" id="search" name="search" class="form-control" placeholder="procurar...">
+    </form>
+</div>
+<div id="events-container" class="col-md-12">
+    @if($search)
+        <h2>Buscando por: {{$search}}</h2>
+    @else
+        <h2>Próximos Eventos</h2>
+        <p class="subtitle">Veja os eventos dos próximos dias</p>
+    @endif
+    <div id="cards-container" class="row">
+        @foreach($events as $event)
+        <div class="card col-md-3">
+            <!-- A img não é mais estatica agora eu concateno com o $events->imgage para o usuario add o imagem-->
+            <img src="/img/events/{{ $event->image }}" alt="{{ $event->title }}">
+            <div class="card-body">
+                <p class="card-date">{{date('d/m/Y', strtotime($event->date))}}</p>
+                <h5 class="card-title">{{ $event->title }}</h5>
+                <p class="card-participants">{{ count($event->users) }} Participantes</p>
+                <a href="/events/{{ $event->id }}" class="btn btn-primary">Saber mais</a>
+            </div>
+        </div>
+        @endforeach
+        @if(count($events) == 0 && $search)
+            <p>Não foi possivel encontrar nenhum evento com {{$search}}! <a href="/">Ver todos</p>
+        @elseif(count($events) == 0)
+            <p>Não há eventos disponíveis</p>
+        @endif
+    </div>
+</div>
 
-<p>{{$nome}}</p>
-
-@if($nome == "Pedro")
-<p>O nome é Pedro</p>
-@elseif($nome == "André")
-<p>O nome é {{$nome}} e ele tem {{$idade}} anos.</p>
-@else
-<p>O nome não é Pedro</p>
-@endif
-
-@for($i = 0; $i < count($arr); $i++) <p>{{$arr[$i]}}</p>
-    @endfor
-
-    @foreach($nomes as $nome)
-    <p>{{ $nome }}</p>
-    @endforeach
-
-    @php
-    $name = "ManoloDerpina";
-    //echo $name;
-    @endphp
-
-    {{-- Este é o comentario do blade --}}
-
-    @endsection
+ @endsection
